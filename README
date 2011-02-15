@@ -1,0 +1,27 @@
+osrandom
+--------
+
+Simple interface to the operating system prng.  Currently only /dev/urandom is supported.
+It is assumed that these sources are non-blocking in nature, so therefore sync IO calls
+are used by default (async io can be used by passing a callback).
+
+Note: Blocking stat and open calls are used on module load.  It is recommended that you
+require the module at least once at init time so as not to block your app later.
+
+This should be extended to call CryptGenRandom on windows which serves the same function
+as /dev/urandom.
+
+Quick usage
+-----------
+
+// Print a buffer synchronously
+var osrandom=require('osrandom');
+console.log(osrandom(32).toString('base64'))
+
+// Use asynchronously
+var osrandom=require('osrandom');
+osrandom(32, function(err, buffer) {
+	if (err) throw err;
+	console.log(buffer.toString('base64'));
+});
+
